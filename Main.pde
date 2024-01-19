@@ -2,6 +2,8 @@ Puck puck;
 
 Bat batA, batB;
 
+GameManager gameManager;
+
 int batSpeed = 10;
 
 // var init before rendering
@@ -13,7 +15,11 @@ void setup() {
 
   batA = new Bat(true, 0, 200, 60, color(0, 255, 0));
   batB = new Bat(false, 0, 200, 60, color(0, 0, 255));
+
+  gameManager = new GameManager(10);
   
+  // Create the font
+  textFont(createFont("Roboto-Light.ttf", 36));
 }
 
 // draw app graphics
@@ -23,6 +29,8 @@ void draw() {
   puck.update();
   batA.update();
   batB.update();
+
+  gameManager.drawScore();
 
   // handle bat collisions
   if (batA.isColliding(puck) || batB.isColliding(puck)) {
