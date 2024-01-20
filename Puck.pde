@@ -14,8 +14,8 @@ class Puck extends GameObject {
   }
 
   public void reset() {
-    this.x = width / 2;
-    this.y = height / 2;
+    this.x = width / 2 + random(-100, 100);
+    this.y = height / 2 + random(-100, 100);
     this.speedX = random(-10, 10);
     this.speedY = random(-10, 10);
   }
@@ -31,10 +31,8 @@ class Puck extends GameObject {
 
   public boolean isCollidingWithOtherPuck(Puck puck) {
     // check if the puck is colliding with the paddle
-    if (this.x + this.size / 2 > puck.x - puck.size / 2 && this.y - this.size / 2 < puck.y + puck.size / 2) {
-      return true;
-    }
-    return false;
+    float distance = dist(this.x, this.y, puck.x, puck.y);
+    return distance < size / 2 + puck.size / 2;
   }
 
   public void boarderCollision() {

@@ -59,10 +59,20 @@ void draw() {
       batA.update();
       batB.update();
     }
+
     // handle bat collisions
     if (batA.isColliding(pucks[i]) || batB.isColliding(pucks[i])) {
       pucks[i].batCollision();
     }
+
+    for (int j = i + 1; j < pucks.length; j++) {
+      if (pucks[i].isCollidingWithOtherPuck(pucks[j])) {
+        // Perform collision response between pucks[i] and pucks[j]
+        pucks[i].batCollision();
+        pucks[j].batCollision();
+      }
+    }
+
     // handle points
     if (!gameManager.isGameOver() && pucks[i].isCollidingWithGoal())
     {
