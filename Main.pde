@@ -46,11 +46,9 @@ void setup() {
 // draw app graphics
 void draw() {
   background(0);
-
-  textFont(createFont("Roboto-Light.ttf", 36));
   gameManager.drawScore();
 
-  textFont(createFont("Roboto-Light.ttf", 16));
+  textSize(16);
   text("Press \"R\" to restart the game", width / 2 - 100, 60);
 
   for (int i = 0; i < pucks.length; i++) {
