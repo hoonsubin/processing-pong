@@ -23,8 +23,6 @@ class Puck extends GameObject {
   public boolean isCollidingWithGoal() {
     // when colliding with the goal, reset the puck
     if (this.x - this.size / 2 < 0 || this.x + this.size / 2 > width) {
-      //this.speedX *= -1;
-      //x = constrain(x, this.size, width - this.size);
 
       return true;
     }
@@ -40,7 +38,7 @@ class Puck extends GameObject {
     }
   }
 
-  public void ranBounce() {
+  public void randBounce() {
     this.speedY *= -1;
     this.speedX *= -1;
 
