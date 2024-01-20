@@ -16,26 +16,43 @@ void setup() {
   batA = new Bat(true, 0, 200, 60, color(0, 255, 0));
   batB = new Bat(false, 0, 200, 60, color(0, 0, 255));
 
-  gameManager = new GameManager(10);
+  gameManager = new GameManager(3);
   
-  // Create the font
+  // create the default font
   textFont(createFont("Roboto-Light.ttf", 36));
 }
 
 // draw app graphics
 void draw() {
   background(0);
-  
-  puck.update();
-  batA.update();
-  batB.update();
 
+  if (!gameManager.isGameOver()) {
+    puck.update();
+    batA.update();
+    batB.update();
+  }
+
+  textFont(createFont("Roboto-Light.ttf", 36));
   gameManager.drawScore();
+
+  textFont(createFont("Roboto-Light.ttf", 16));
+  text("Press \"R\" to restart the game", width / 2 - 100, 60);
 
   // handle bat collisions
   if (batA.isColliding(puck) || batB.isColliding(puck)) {
-    puck.speedX *= -1;
-    puck.speedY *= -1;
+    puck.ranBounce();
+  }
+
+  // handle points
+  if (!gameManager.isGameOver() && puck.isCollidingWithGoal())
+  {
+    if (puck.x >= width / 2) {
+      gameManager.playerAScore++;
+    }
+    else {
+      gameManager.playerBScore++;
+    }
+    puck.reset();
   }
 }
 
@@ -58,6 +75,11 @@ void keyPressed() {
   }
   if (keyCode == DOWN) {
     batB.speedY += batSpeed;
+  }
+
+  if (key == 'r') {
+    gameManager.resetGame();
+    puck.reset();
   }
 }
 
