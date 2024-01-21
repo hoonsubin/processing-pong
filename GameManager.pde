@@ -43,14 +43,16 @@ class GameManager {
   }
 
   public void drawScore() {
-    fill(255);
     textSize(64);
+    fill(random(255), random(255), random(255));
     if (playerAScore >= this.maxScore) {
+      
       text("Player A wins!", width / 2 - 200, height / 2);
     } else if (playerBScore >= this.maxScore) {
       text("Player B wins!", width / 2 - 200, height / 2);
     }
     else {
+      fill(255);
       text(this.playerAScore, 64, 60);
       text(this.playerBScore, width - 128, 60);
     }
@@ -58,6 +60,9 @@ class GameManager {
   }
 
   public void update() {
+    if (this.isGameOver()) {
+      return;
+    }
     // update for all pucks
     for (int i = 0; i < pucks.length; i++) {
       // update pucks and bat update
@@ -107,6 +112,9 @@ class GameManager {
       }
     }
 
+    if (activeItems.size() <= 0) {
+      return;
+    }
     // update item behavior
     for (int i = 0; i < activeItems.size(); i++) {
       Item item = activeItems.get(i);
