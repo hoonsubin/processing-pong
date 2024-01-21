@@ -101,7 +101,7 @@ class GameManager {
     for (int i = 0; i < maxItems; i++) {
       if (activeItems.size() < maxItems && now - this.lastSpawnTime >= this.itemSpawnInterval) {
         if (random(1) < 0.3) {
-          activeItems.add(this.spawnItemInGrid(this.getRandomSpawnableGrid(), 0));
+          activeItems.add(this.spawnItemInGrid(this.getRandomSpawnableGrid(), (int)random(0, 2)));
           this.lastSpawnTime = now;
         }
       }
@@ -112,10 +112,18 @@ class GameManager {
       Item item = activeItems.get(i);
       item.update();
       item.drawObject();
-      // if (item.isCollidingWithBat(this.batA) || item.isCollidingWithBat(this.batB)) {
-      //   item.applyEffect();
-      //   activeItems.remove(i);
-      // }
+      if (!item.isAlive()) {
+        activeItems.remove(i);
+      }
+
+      // I know this is repeating from the previous section, but simple is better for now
+      for (int j = 0; j < pucks.length; j++) {
+        // handle puck collisions
+        if (pucks[j].isCollidingWithItem(item)) {
+          pucks[j].batCollision();
+          activeItems.remove(i);
+        }
+      }
     }
   }
 
