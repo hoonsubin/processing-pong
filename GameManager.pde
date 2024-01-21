@@ -7,6 +7,12 @@ class GameManager {
   int maxScore;
 
   Grid[][] itemGrid;
+
+  int lastSpawnTime;
+
+  int itemSpawnInterval = 5000;
+
+  ArrayList<Item> activeItems;
  
   public GameManager(int maxScore, Puck[] pucks, Bat batA, Bat batB) {
     this.maxScore = maxScore;
@@ -14,10 +20,15 @@ class GameManager {
     this.batA = batA;
     this.batB = batB;
 
+    this.lastSpawnTime = millis();
+
     // init item grid
     int gridSize = 64;
 
     itemGrid = this.createGrid(gridSize);
+
+    activeItems = new ArrayList<Item>();
+    activeItems.add(this.spawnItemInGrid(this.getRandomSpawnableGrid(), 0));
   }
 
   public void addScore(boolean addForPlayerA) {
@@ -83,10 +94,28 @@ class GameManager {
       }
     }
 
-    // handle random items
-    if (random(1) < 0.3) {
-      Item item = this.spawnItemInGrid(this.getRandomSpawnableGrid(), 1);
+    // handle random item spwaning
+    int maxItems = 5;
+    int now = millis();
+
+    for (int i = 0; i < maxItems; i++) {
+      if (activeItems.size() < maxItems && now - this.lastSpawnTime >= this.itemSpawnInterval) {
+        if (random(1) < 0.3) {
+          activeItems.add(this.spawnItemInGrid(this.getRandomSpawnableGrid(), 0));
+          this.lastSpawnTime = now;
+        }
+      }
+    }
+
+    // update item behavior
+    for (int i = 0; i < activeItems.size(); i++) {
+      Item item = activeItems.get(i);
+      item.update();
       item.drawObject();
+      // if (item.isCollidingWithBat(this.batA) || item.isCollidingWithBat(this.batB)) {
+      //   item.applyEffect();
+      //   activeItems.remove(i);
+      // }
     }
   }
 
@@ -123,11 +152,29 @@ class GameManager {
 
     int startCol = playSpaceGridDiv;
     int endCol = (this.itemGrid.length - 1) - playSpaceGridDiv;
+    int gridIndexX = (int)random(startCol, endCol);
+    int gridIndexY = (int)random(0, this.itemGrid[0].length - 1);
 
-    return this.itemGrid[(int)random(startCol, endCol)][(int)random(0, this.itemGrid[0].length - 1)];
+    // prevent items from spawning in the same grid
+    while (!this.isGridFree(gridIndexX, gridIndexY)) {
+      gridIndexX = (int)random(startCol, endCol);
+      gridIndexY = (int)random(0, this.itemGrid[0].length - 1);
+    }
+
+    return this.itemGrid[gridIndexX][gridIndexY];
   }
 
   public Item spawnItemInGrid(Grid grid, int itemType) {
     return new Item((float)grid.x, (float)grid.y, random(32, grid.size), itemType);
+  }
+
+  private boolean isGridFree(int gridX, int gridY) {
+    for (int i = 0; i < activeItems.size(); i++) {
+      Item item = activeItems.get(i);
+      if (item.x == gridX && item.y == gridY) {
+        return false;
+      }
+    }
+    return true;
   }
 }
