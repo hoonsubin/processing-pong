@@ -48,7 +48,8 @@ void draw() {
   background(0);
   gameManager.drawScore();
   gameManager.update();
-
+  
+  fill(255);
   textSize(16);
   text("Press \"R\" to restart the game", width / 2 - 100, 60);
 }
