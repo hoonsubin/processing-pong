@@ -37,7 +37,7 @@ void setup() {
   batA = new Bat(true, 0, batWidth, batHeight, color(0, 255, 0));
   batB = new Bat(false, 0, batWidth, batHeight, color(0, 0, 255));
 
-  gameManager = new GameManager(maxScore);
+  gameManager = new GameManager(maxScore, pucks, batA, batB);
   
   // create the default font
   textFont(createFont("Roboto-Light.ttf", 36));
@@ -47,43 +47,10 @@ void setup() {
 void draw() {
   background(0);
   gameManager.drawScore();
+  gameManager.update();
 
   textSize(16);
   text("Press \"R\" to restart the game", width / 2 - 100, 60);
-
-  for (int i = 0; i < pucks.length; i++) {
-    if (!gameManager.isGameOver()) {
-      pucks[i].update();
-      batA.update();
-      batB.update();
-    }
-
-    // handle bat collisions
-    if (batA.isColliding(pucks[i]) || batB.isColliding(pucks[i])) {
-      pucks[i].batCollision();
-    }
-
-    for (int j = i + 1; j < pucks.length; j++) {
-      if (pucks[i].isCollidingWithOtherPuck(pucks[j])) {
-        // Perform collision response between pucks[i] and pucks[j]
-        pucks[i].batCollision();
-        pucks[j].batCollision();
-      }
-    }
-
-    // handle points
-    if (!gameManager.isGameOver() && pucks[i].isCollidingWithGoal())
-    {
-      if (pucks[i].x >= width / 2) {
-        gameManager.playerAScore++;
-      }
-      else {
-        gameManager.playerBScore++;
-      }
-      pucks[i].reset();
-    }
-  }
-
 }
 
 // controls

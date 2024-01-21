@@ -1,11 +1,16 @@
 class GameManager {
   int playerAScore = 0;
   int playerBScore = 0;
+  Puck[] pucks;
+  Bat batA, batB;
   
   int maxScore;
  
-  public GameManager(int maxScore) {
+  public GameManager(int maxScore, Puck[] pucks, Bat batA, Bat batB) {
     this.maxScore = maxScore;
+    this.pucks = pucks;
+    this.batA = batA;
+    this.batB = batB;
   }
 
   public void addScore(boolean addForPlayerA) {
@@ -32,6 +37,43 @@ class GameManager {
       text(this.playerBScore, width - 128, 60);
     }
     
+  }
+
+  public void update() {
+    for (int i = 0; i < pucks.length; i++) {
+      // update pucks and bat update
+      if (!this.isGameOver()) {
+        pucks[i].update();
+        batA.update();
+        batB.update();
+      }
+
+      // handle bat collisions
+      if (batA.isColliding(pucks[i]) || batB.isColliding(pucks[i])) {
+        pucks[i].batCollision();
+      }
+
+      // handle puck collisions
+      for (int j = i + 1; j < pucks.length; j++) {
+        if (pucks[i].isCollidingWithOtherPuck(pucks[j])) {
+          // Perform collision response between pucks[i] and pucks[j]
+          pucks[i].batCollision();
+          pucks[j].batCollision();
+        }
+      }
+
+      // handle points
+      if (!this.isGameOver() && pucks[i].isCollidingWithGoal())
+      {
+        if (pucks[i].x >= width / 2) {
+          this.playerAScore++;
+        }
+        else {
+          this.playerBScore++;
+        }
+        pucks[i].reset();
+      }
+    }
   }
 
   public boolean isGameOver() {
