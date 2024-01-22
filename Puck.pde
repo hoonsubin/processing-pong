@@ -45,8 +45,8 @@ class Puck extends GameObject {
     return false;
   }
 
-  public void boarderCollision() {
-    // bounce the puck off the boarder
+  public void borderCollision() {
+    // bounce the puck off the border
     if (this.y - this.size / 2 < 0 || this.y + this.size / 2 > height) {
       
       this.speedY *= -1;

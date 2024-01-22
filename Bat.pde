@@ -7,7 +7,7 @@ class Bat extends GameObject {
     this.thickness = w;
   }
   
-  public void boarderCollision() {
+  public void borderCollision() {
     if (this.y < 0) {
       this.y = 0;
     }

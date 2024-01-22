@@ -92,12 +92,10 @@ class GameManager {
     int maxItems = 5;
     int now = millis();
 
-    for (int i = 0; i < maxItems; i++) {
-      if (activeItems.size() < maxItems && now - this.lastSpawnTime >= this.itemSpawnInterval) {
-        if (random(1) < 0.3) {
-          activeItems.add(this.spawnItemInGrid(this.getRandomSpawnableGrid(), (int)random(0, 2)));
-          this.lastSpawnTime = now;
-        }
+    if (activeItems.size() < maxItems && now - this.lastSpawnTime >= this.itemSpawnInterval) {
+      if (random(1) < 0.3) {
+        activeItems.add(this.spawnItemInGrid(this.getRandomSpawnableGrid(), (int)random(0, 2)));
+        this.lastSpawnTime = now;
       }
     }
 

@@ -43,7 +43,7 @@ class GameObject {
         this.objectColor = c;
     }
 
-    public void boarderCollision() {}
+    public void borderCollision() {}
 
     public void drawObject() {}
 
@@ -54,7 +54,7 @@ class GameObject {
 
     public void update() {
         this.move();
-        this.boarderCollision();
+        this.borderCollision();
         this.drawObject();
     }
 }
