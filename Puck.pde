@@ -35,6 +35,16 @@ class Puck extends GameObject {
     return distance < size / 2 + puck.size / 2;
   }
 
+  public boolean isCollidingWithItem(Item item) {
+    // check if the puck is colliding with an item
+    if (this.x + this.size / 2 > item.x && this.x - this.size / 2 < item.x + item.size) {
+      if (this.y + this.size / 2 > item.y && this.y - this.size / 2 < item.y + item.size) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   public void boarderCollision() {
     // bounce the puck off the boarder
     if (this.y - this.size / 2 < 0 || this.y + this.size / 2 > height) {
