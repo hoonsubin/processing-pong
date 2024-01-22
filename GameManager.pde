@@ -140,11 +140,7 @@ class GameManager {
       for (int gridY = 0; gridY < grid[0].length; gridY++) {
           // check if the grid position is not on the edge of the grid
           if (gridX < width - gridSize && gridY < height - gridSize) {
-            int itemSize = gridSize;
-            color itemColor = color(255, 255, 255);
-            int itemX = gridX * gridSize;
-            int itemY = gridY * gridSize;
-            grid[gridX][gridY] = new Grid(itemX, itemY, itemSize);
+            grid[gridX][gridY] = new Grid(gridX * gridSize, gridY * gridSize, gridSize);
           }
       }
     }
