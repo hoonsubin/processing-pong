@@ -31,17 +31,6 @@ class GameManager {
     activeItems.add(this.spawnItemInGrid(this.getRandomSpawnableGrid(), 0));
   }
 
-  public void addScore(boolean addForPlayerA) {
-    if (this.playerAScore > this.maxScore || this.playerBScore > this.maxScore) {
-      return;
-    }
-    if (addForPlayerA) {
-      this.playerAScore++;
-    } else {
-      this.playerBScore++;
-    }
-  }
-
   public void drawScore() {
     textSize(64);
     fill(random(255), random(255), random(255));
